@@ -1,0 +1,10 @@
+version: '3'
+services:
+  child:
+    build:
+      context: ./childServer
+      dockerfile: Dockerfile.test
+    ports:
+      - '7100:7100/udp'
+    environment:
+      - CHILD_PORT=7100

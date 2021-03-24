@@ -1,0 +1,32 @@
+version: '3'
+services:
+  mongo:
+    image: mongo:latest
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password
+  mothership:
+    build: .
+    ports:
+      - '7192:7192'
+    environment:
+      - DB_NAME=hicore
+      - DB_HOST=mongo
+      - DB_USERNAME=admin
+      - DB_PASSWORD=password
+      - SERVER_PORT=7192
+    restart: always
+    depends_on:
+      - mongo
+  child:
+    build: ./childServer
+    ports:
+      - '7100:7100/udp'
+    environment:
+      - CHILD_PORT=7100
+      - MOTHERSHIP_HOST=mothership
+      - MOTHERSHIP_PORT=7192
+    restart: always
+    depends_on:
+      - mothership
+    command: sh -c "/usr/wait-for-it.sh --timeout=0 mothership:7192 && ./out/child"

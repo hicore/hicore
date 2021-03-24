@@ -1,0 +1,18 @@
+version: '3'
+services:
+  mongo:
+    image: mongo:latest
+  mothership:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    ports:
+      - '7192:7192'
+    environment:
+      - DB_HOST=mongo
+      - SERVER_PORT=7192
+    depends_on:
+      - mongo
+    links:
+      - mongo
+    command: 'npm run test'
