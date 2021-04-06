@@ -1,4 +1,4 @@
-const { createClass: createClass } = require('./createClass');
+const { addObject: addObject } = require('./addObject');
 const { updateClass: updateClass } = require('./updateClass');
 const { incrementValue: incrementValue } = require('./incrementValue');
 const { catchData: catchData } = require('./catchData');
@@ -6,8 +6,8 @@ const { deleteObject: deleteObject } = require('./deleteObject');
 
 module.exports.storage = (jo, socket) => {
   switch (jo.type) {
-    case 'create':
-      createClass(jo, socket);
+    case 'add':
+      addObject(jo, socket);
       break;
     case 'update':
       updateClass(jo, socket);

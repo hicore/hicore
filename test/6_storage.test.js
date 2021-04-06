@@ -6,6 +6,11 @@ var socketUrl = 'http://localhost:7192?type=client&socketKey=defaultKey';
 var client1;
 var tokenClient1;
 
+const STORAGE_CREATE = 0,
+  STORAGE_UPDATE = 1;
+
+var counterForStorage = 0;
+
 describe('Create sockets', function () {
   it('should create sockets', function (done) {
     var isClient1Connect = false;
@@ -43,87 +48,106 @@ describe('Authenticate for testing ' + 'STORAGE'.green, function () {
 });
 
 describe('Storage', function () {
-  it('should create class for saving custom data (client 1)', function (done) {
-    var createClass = {
-      type: 'create',
+  it('should create and update collection for saving custom data (client 1)', function (done) {
+    var addObject = {
+      type: 'add',
       token: tokenClient1,
       class: 'infos',
       data: { xp: 1, gameWins: 2, gameLose: 1, totalGame: 3 },
     };
 
-    client1.emit('storage', JSON.stringify(createClass));
-    client1.on('createClass', (data) => {
-      expect(data.type).to.equal('success');
-      expect(data.code).to.equal(0);
-      done();
-    });
-  });
+    client1.emit('storage', JSON.stringify(addObject));
+    client1.on('addObject', (data) => {
+      if (counterForStorage == STORAGE_CREATE) {
+        expect(data.type).to.equal('success');
+        expect(data.code).to.equal(0);
+        // test update if collection is exist
+        var addObject = {
+          type: 'add',
+          token: tokenClient1,
+          class: 'infos',
+          data: { xp: 2, gameWins: 3 },
+        };
 
-  it('should update class with new values (client 1)', function (done) {
-    var updateClass = {
-      type: 'update',
-      token: tokenClient1,
-      class: 'infos',
-      data: { totalTimePlayed: 10, isActive: true },
-    };
+        client1.emit('storage', JSON.stringify(addObject));
+      } else if (counterForStorage == STORAGE_UPDATE) {
+        expect(data.type).to.equal('success');
+        expect(data.code).to.equal(0);
 
-    client1.emit('storage', JSON.stringify(updateClass));
-    client1.on('updateClass', (data) => {
-      expect(data.type).to.equal('success');
-      expect(data.code).to.equal(0);
-      done();
-    });
-  });
-
-  it('should increment numeric values (client 1)', function (done) {
-    var incrementValue = {
-      type: 'increment',
-      token: tokenClient1,
-      class: 'infos',
-      data: { xp: 1 },
-    };
-
-    client1.emit('storage', JSON.stringify(incrementValue));
-    client1.on('incrementValue', (data) => {
-      expect(data.type).to.equal('success');
-      expect(data.code).to.equal(1);
-      done();
-    });
-  });
-
-  it('should get data from class (client 1)', function (done) {
-    var getData = {
-      type: 'get',
-      token: tokenClient1,
-      class: 'infos',
-      data: { xp: 1 },
-    };
-
-    client1.emit('storage', JSON.stringify(getData));
-    client1.on('catchData', (data) => {
-      expect(data.type).to.equal('success');
-      expect(data.code).to.equal(0);
-      done();
-    });
-  });
-
-  it('should delete object from class (client 1)', function (done) {
-    var getData = {
-      type: 'delete',
-      token: tokenClient1,
-      class: 'infos',
-    };
-
-    client1.emit('storage', JSON.stringify(getData));
-    client1.on('deleteObject', (data) => {
-      expect(data.type).to.equal('success');
-      expect(data.code).to.equal(0);
-
-      if (client1.connected) {
-        client1.disconnect();
+        if (client1.connected) {
+          client1.disconnect();
+        }
+        done();
       }
-
-      done();
+      counterForStorage++;
     });
   });
+
+  // it('should update class with new values (client 1)', function (done) {
+  //   var updateClass = {
+  //     type: 'update',
+  //     token: tokenClient1,
+  //     class: 'infos',
+  //     data: { totalTimePlayed: 10, isActive: true },
+  //   };
+
+  //   client1.emit('storage', JSON.stringify(updateClass));
+  //   client1.on('updateClass', (data) => {
+  //     expect(data.type).to.equal('success');
+  //     expect(data.code).to.equal(0);
+  //     done();
+  //   });
+  // });
+
+  // it('should increment numeric values (client 1)', function (done) {
+  //   var incrementValue = {
+  //     type: 'increment',
+  //     token: tokenClient1,
+  //     class: 'infos',
+  //     data: { xp: 1 },
+  //   };
+
+  //   client1.emit('storage', JSON.stringify(incrementValue));
+  //   client1.on('incrementValue', (data) => {
+  //     expect(data.type).to.equal('success');
+  //     expect(data.code).to.equal(1);
+  //     done();
+  //   });
+  // });
+
+  // it('should get data from class (client 1)', function (done) {
+  //   var getData = {
+  //     type: 'get',
+  //     token: tokenClient1,
+  //     class: 'infos',
+  //     data: { xp: 1 },
+  //   };
+
+  //   client1.emit('storage', JSON.stringify(getData));
+  //   client1.on('catchData', (data) => {
+  //     expect(data.type).to.equal('success');
+  //     expect(data.code).to.equal(0);
+  //     done();
+  //   });
+  // });
+
+  // it('should delete object from class (client 1)', function (done) {
+  //   var getData = {
+  //     type: 'delete',
+  //     token: tokenClient1,
+  //     class: 'infos',
+  //   };
+
+  //   client1.emit('storage', JSON.stringify(getData));
+  //   client1.on('deleteObject', (data) => {
+  //     expect(data.type).to.equal('success');
+  //     expect(data.code).to.equal(0);
+
+  //     if (client1.connected) {
+  //       client1.disconnect();
+  //     }
+
+  //     done();
+  //   });
+  // });
 });
