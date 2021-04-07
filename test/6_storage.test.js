@@ -52,7 +52,7 @@ describe('Storage', function () {
     var addObject = {
       type: 'add',
       token: tokenClient1,
-      class: 'infos',
+      collection: 'infos',
       data: { xp: 1, gameWins: 2, gameLose: 1, totalGame: 3 },
     };
 
@@ -65,7 +65,7 @@ describe('Storage', function () {
         var addObject = {
           type: 'add',
           token: tokenClient1,
-          class: 'infos',
+          collection: 'infos',
           data: { xp: 2, gameWins: 3 },
         };
 
@@ -84,7 +84,7 @@ describe('Storage', function () {
     var incrementValue = {
       type: 'increment',
       token: tokenClient1,
-      class: 'infos',
+      collection: 'infos',
       data: { xp: 1 },
     };
 
@@ -101,7 +101,7 @@ describe('Storage', function () {
     var fetchData = {
       type: 'fetch',
       token: tokenClient1,
-      class: 'infos',
+      collection: 'infos',
       data: { xp: 1 },
     };
 
@@ -114,12 +114,12 @@ describe('Storage', function () {
     });
   });
 
-  it('should delete object from class (client 1)', function (done) {
+  it('should delete object from collection (client 1)', function (done) {
     var getData = {
       type: 'delete',
       token: tokenClient1,
       keys: { xp: 1 },
-      class: 'infos',
+      collection: 'infos',
     };
 
     client1.emit('storage', JSON.stringify(getData));

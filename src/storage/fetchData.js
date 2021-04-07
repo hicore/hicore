@@ -13,7 +13,7 @@ function fetchData(jo, socket) {
     if (result) {
       var userData = jwt.user;
 
-      const collectionObject = new CustomData(jo.class);
+      const collectionObject = new CustomData(jo.collection);
 
       collectionObject.Custom.findOne({
         userId: userData.userId,

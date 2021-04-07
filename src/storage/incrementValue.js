@@ -21,7 +21,7 @@ function incrementValue(jo, socket) {
         CustomSchema.add({ [key]: {} });
       }
 
-      const collectionObject = new CustomData(jo.class);
+      const collectionObject = new CustomData(jo.collection);
 
       collectionObject.Custom.updateOne(
         {

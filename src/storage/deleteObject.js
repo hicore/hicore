@@ -20,16 +20,14 @@ function deleteObject(jo, socket) {
         CustomSchema.add({ [key]: {} });
       }
 
-      const classObject = new CustomData(jo.class);
-      console.log(jo.keys);
-      classObject.Custom.updateOne(
+      const collectionObject = new CustomData(jo.collection);
+
+      collectionObject.Custom.updateOne(
         {
           userId: userData.userId,
         },
         { $unset: jo.keys },
         (err, result) => {
-          console.log(err, result);
-
           if (!err) {
             success.push({
               type: 'success',
