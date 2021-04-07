@@ -1,7 +1,7 @@
 const { addObject: addObject } = require('./addObject');
 const { updateClass: updateClass } = require('./updateClass');
 const { incrementValue: incrementValue } = require('./incrementValue');
-const { catchData: catchData } = require('./catchData');
+const { fetchData: fetchData } = require('./fetchData');
 const { deleteObject: deleteObject } = require('./deleteObject');
 
 module.exports.storage = (jo, socket) => {
@@ -12,8 +12,8 @@ module.exports.storage = (jo, socket) => {
     case 'increment':
       incrementValue(jo, socket);
       break;
-    case 'get':
-      catchData(jo, socket);
+    case 'fetch':
+      fetchData(jo, socket);
       break;
     case 'delete':
       deleteObject(jo, socket);

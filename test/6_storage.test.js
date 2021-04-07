@@ -93,6 +93,23 @@ describe('Storage', function () {
       expect(data.type).to.equal('success');
       expect(data.code).to.equal(1);
 
+      done();
+    });
+  });
+
+  it('should fetch data from collection (client 1)', function (done) {
+    var fetchData = {
+      type: 'fetch',
+      token: tokenClient1,
+      class: 'infos',
+      data: { xp: 1 },
+    };
+
+    client1.emit('storage', JSON.stringify(fetchData));
+    client1.on('fetchData', (data) => {
+      expect(data.type).to.equal('success');
+      expect(data.code).to.equal(0);
+
       if (client1.connected) {
         client1.disconnect();
       }
@@ -100,22 +117,6 @@ describe('Storage', function () {
       done();
     });
   });
-
-  // it('should get data from class (client 1)', function (done) {
-  //   var getData = {
-  //     type: 'get',
-  //     token: tokenClient1,
-  //     class: 'infos',
-  //     data: { xp: 1 },
-  //   };
-
-  //   client1.emit('storage', JSON.stringify(getData));
-  //   client1.on('catchData', (data) => {
-  //     expect(data.type).to.equal('success');
-  //     expect(data.code).to.equal(0);
-  //     done();
-  //   });
-  // });
 
   // it('should delete object from class (client 1)', function (done) {
   //   var getData = {
