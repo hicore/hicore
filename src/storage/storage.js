@@ -9,9 +9,6 @@ module.exports.storage = (jo, socket) => {
     case 'add':
       addObject(jo, socket);
       break;
-    case 'update':
-      updateClass(jo, socket);
-      break;
     case 'increment':
       incrementValue(jo, socket);
       break;

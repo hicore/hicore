@@ -74,46 +74,32 @@ describe('Storage', function () {
         expect(data.type).to.equal('success');
         expect(data.code).to.equal(0);
 
-        if (client1.connected) {
-          client1.disconnect();
-        }
         done();
       }
       counterForStorage++;
     });
   });
 
-  // it('should update class with new values (client 1)', function (done) {
-  //   var updateClass = {
-  //     type: 'update',
-  //     token: tokenClient1,
-  //     class: 'infos',
-  //     data: { totalTimePlayed: 10, isActive: true },
-  //   };
+  it('should increment numeric values (client 1)', function (done) {
+    var incrementValue = {
+      type: 'increment',
+      token: tokenClient1,
+      class: 'infos',
+      data: { xp: 1 },
+    };
 
-  //   client1.emit('storage', JSON.stringify(updateClass));
-  //   client1.on('updateClass', (data) => {
-  //     expect(data.type).to.equal('success');
-  //     expect(data.code).to.equal(0);
-  //     done();
-  //   });
-  // });
+    client1.emit('storage', JSON.stringify(incrementValue));
+    client1.on('incrementValue', (data) => {
+      expect(data.type).to.equal('success');
+      expect(data.code).to.equal(1);
 
-  // it('should increment numeric values (client 1)', function (done) {
-  //   var incrementValue = {
-  //     type: 'increment',
-  //     token: tokenClient1,
-  //     class: 'infos',
-  //     data: { xp: 1 },
-  //   };
+      if (client1.connected) {
+        client1.disconnect();
+      }
 
-  //   client1.emit('storage', JSON.stringify(incrementValue));
-  //   client1.on('incrementValue', (data) => {
-  //     expect(data.type).to.equal('success');
-  //     expect(data.code).to.equal(1);
-  //     done();
-  //   });
-  // });
+      done();
+    });
+  });
 
   // it('should get data from class (client 1)', function (done) {
   //   var getData = {
