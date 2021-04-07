@@ -1,5 +1,4 @@
 const { addObject: addObject } = require('./addObject');
-const { updateClass: updateClass } = require('./updateClass');
 const { incrementValue: incrementValue } = require('./incrementValue');
 const { fetchData: fetchData } = require('./fetchData');
 const { deleteObject: deleteObject } = require('./deleteObject');

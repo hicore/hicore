@@ -110,6 +110,23 @@ describe('Storage', function () {
       expect(data.type).to.equal('success');
       expect(data.code).to.equal(0);
 
+      done();
+    });
+  });
+
+  it('should delete object from class (client 1)', function (done) {
+    var getData = {
+      type: 'delete',
+      token: tokenClient1,
+      keys: { xp: 1 },
+      class: 'infos',
+    };
+
+    client1.emit('storage', JSON.stringify(getData));
+    client1.on('deleteObject', (data) => {
+      expect(data.type).to.equal('success');
+      expect(data.code).to.equal(0);
+
       if (client1.connected) {
         client1.disconnect();
       }
@@ -117,24 +134,4 @@ describe('Storage', function () {
       done();
     });
   });
-
-  // it('should delete object from class (client 1)', function (done) {
-  //   var getData = {
-  //     type: 'delete',
-  //     token: tokenClient1,
-  //     class: 'infos',
-  //   };
-
-  //   client1.emit('storage', JSON.stringify(getData));
-  //   client1.on('deleteObject', (data) => {
-  //     expect(data.type).to.equal('success');
-  //     expect(data.code).to.equal(0);
-
-  //     if (client1.connected) {
-  //       client1.disconnect();
-  //     }
-
-  //     done();
-  //   });
-  // });
 });
