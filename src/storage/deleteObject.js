@@ -1,5 +1,5 @@
 const verifyToken = require('../token/verifyToken');
-const CustomData = require('../models/CustomData');
+const { CustomData, CustomSchema } = require('../models/CustomData');
 
 function deleteObject(jo, socket) {
   let success = [];
@@ -13,15 +13,21 @@ function deleteObject(jo, socket) {
     if (result) {
       var userData = jwt.user;
 
-      const classObject = new CustomData(jo.class);
+      // add user to schema
+      CustomSchema.add({ ['userId']: {} });
+      // add data to schema
+      for (var key in jo.keys) {
+        CustomSchema.add({ [key]: {} });
+      }
 
-      classObject.Custom.deleteOne(
+      const collectionObject = new CustomData(jo.collection);
+
+      collectionObject.Custom.updateOne(
         {
-          'user.id': userData.userId,
+          userId: userData.userId,
         },
+        { $unset: jo.keys },
         (err, result) => {
-          console.log(err, result);
-
           if (!err) {
             success.push({
               type: 'success',

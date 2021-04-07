@@ -1,5 +1,5 @@
 const verifyToken = require('../token/verifyToken');
-const CustomData = require('../models/CustomData');
+const { CustomData, CustomSchema } = require('../models/CustomData');
 
 function incrementValue(jo, socket) {
   let success = [];
@@ -14,25 +14,23 @@ function incrementValue(jo, socket) {
     if (result) {
       var userData = jwt.user;
 
-      const classObject = new CustomData(jo.class);
-      // Generate the keys for using in $set => data.$.key for update or set new value to db;
+      // add user to schema
+      CustomSchema.add({ ['userId']: {} });
+      // add data to schema
       for (var key in jo.data) {
-        var theKey = 'data' + '.$.' + key.toString();
-        setNewValue.push({ [theKey]: jo.data[key] });
+        CustomSchema.add({ [key]: {} });
       }
-      // Merge multiple objects inside the setNewValue
-      var finalNewValues = setNewValue.reduce((r, c) => Object.assign(r, c), {});
 
-      classObject.Custom.updateOne(
+      const collectionObject = new CustomData(jo.collection);
+
+      collectionObject.Custom.updateOne(
         {
-          'user.id': userData.userId,
+          userId: userData.userId,
         },
         {
-          $inc: finalNewValues,
+          $inc: jo.data,
         },
         (err, result) => {
-          console.log(err, result);
-
           if (!err) {
             success.push({
               type: 'success',

@@ -1,11 +1,11 @@
 const verifyToken = require('../token/verifyToken');
-const CustomData = require('../models/CustomData');
+const { CustomData, CustomSchema } = require('../models/CustomData');
 
-function catchData(jo, socket) {
+function fetchData(jo, socket) {
   let success = [];
   let errors = [];
 
-  var event = 'catchData'; // FIXME change catchData name to get or fetch
+  var event = 'fetchData';
 
   verifyToken.checkToken(jo.token, (result, data) => {
     var jwt = JSON.parse(data);
@@ -13,17 +13,17 @@ function catchData(jo, socket) {
     if (result) {
       var userData = jwt.user;
 
-      const classObject = new CustomData(jo.class);
+      const collectionObject = new CustomData(jo.collection);
 
-      classObject.Custom.findOne({
-        'user.id': userData.userId,
+      collectionObject.Custom.findOne({
+        userId: userData.userId,
       })
         .then((user) => {
           if (user) {
             success.push({
               type: 'success',
-              msg: 'Catch Data successfully',
-              data: user.data,
+              msg: 'Fetch Data successfully',
+              data: user,
               code: 0,
             });
 
@@ -32,7 +32,7 @@ function catchData(jo, socket) {
             errors.push({
               type: 'error',
               code: 2,
-              msg: `User don't have any class with this name: ${jo.class}`,
+              msg: `User don't have any collection with this name: ${jo.class}`,
             });
             emit(event, socket, errors.pop());
           }
@@ -61,4 +61,4 @@ function emit(event, socket, msg) {
   socket.emit(event, msg);
 }
 
-exports.catchData = catchData;
+exports.fetchData = fetchData;
