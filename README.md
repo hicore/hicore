@@ -35,7 +35,7 @@ For deploying server you should first clone the repository from Github for doing
 
 ### Step 2: Create Docker Compose File
 
-Create `docker-compose.yml` and put it in a project folder. You can see full [docker-compose](https://hicore.dev/installation/#step-2-change-docker-compose-file).
+Create `docker-compose.yml` and put it in a project folder. You can see full [docker-compose](https://hicore.netlify.app/installation/#step-2-change-docker-compose-file).
 
 ### Step 3: Run Docker Compose
 
@@ -51,11 +51,11 @@ you can connect to the Mothership Server at `localhost:7192` and connect to the 
 ## Client
 
 Hicore support Unity3D Engine, Unreal Engine will be added as soon as possible.
-You can download Unity3D SDK from [release page](https://github.com/hicore/hicore-unity/releases) and for full documentation check [Unity client doc](https://hicore.dev/unity/).
+You can download Unity3D SDK from [release page](https://github.com/hicore/hicore-unity/releases) and for full documentation check [Unity client doc](https://hicore.netlify.app/unity/).
 
 ## Dashboard
 
-With dashboard you can control your game. The full documentation for Hicore dashboard installation is available in the [Dashboard installation](https://hicore.dev/dashboard-install/) and you can download it from [here](https://github.com/hicore/hicore-dashboard)
+With dashboard you can control your game. The full documentation for Hicore dashboard installation is available in the [Dashboard installation](https://hicore.netlify.app/dashboard-install/) and you can download it from [here](https://github.com/hicore/hicore-dashboard)
 
 ## Contributing
 
